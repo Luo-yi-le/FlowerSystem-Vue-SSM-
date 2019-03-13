@@ -1,6 +1,8 @@
 package com.nf.entity;
 
 
+import java.sql.Date;
+
 public class FOrder {
 
   private int oid;
@@ -8,7 +10,7 @@ public class FOrder {
   private int num;
   private String type;
   private String Phone;
-  private java.sql.Timestamp oDate;
+  private Date oDate;
 
 
   public long getOid() {
@@ -56,11 +58,11 @@ public class FOrder {
   }
 
 
-  public java.sql.Timestamp getODate() {
+  public Date getODate() {
     return oDate;
   }
 
-  public void setODate(java.sql.Timestamp oDate) {
+  public void setODate(Date oDate) {
     this.oDate = oDate;
   }
 

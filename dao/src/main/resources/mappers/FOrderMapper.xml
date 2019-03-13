@@ -15,7 +15,17 @@
     <select id="selectFOrder" resultMap="allFOrder">
         select * from f_order order by oDate  desc
     </select>
+    <!--删除-->
+    <delete id="deleteFOrder" parameterType="int">
+        delete from f_order where oid=#{oid}
+    </delete>
+
     <insert id="insertFOrder" parameterType="FOrder" useGeneratedKeys="true" keyProperty="oid">
         insert into f_order(linkname,num,type,Phone,oDate)values(#{linkname},#{num},#{type},#{Phone},#{oDate})
     </insert>
+
+    <update id="updateFOrder" parameterType="FOrder">
+        update  f_order set linkname=#{linkname},num=#{num},
+        type=#{type},Phone=#{Phone},oDate=#{oDate} where oid=#{oid}
+    </update>
 </mapper>

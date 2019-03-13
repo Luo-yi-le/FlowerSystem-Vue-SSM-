@@ -9,10 +9,25 @@
         thead {
             color: #285e8e;
         }
+
+        h2 {
+            text-align: center;
+            color: #3276b1;
+        }
+        h4{
+            text-align: center;
+            color:red;
+        }
+        h5 {
+            text-align: center;
+            color: #3276b1;
+        }
     </style>
 </head>
 <body>
 <div id="showFOrder">
+    <h2>鲜花预定查询</h2>
+    <h5>日期降序进行排序</h5>
     <table border="1" cellpadding="0" cellspacing="0" width="80%" align="center">
         <thead>
         <tr align="center">
@@ -22,33 +37,175 @@
             <th>预定数量</th>
             <th>联系电话</th>
             <th>送货日期</th>
+            <th>操作</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-
-        </tr>
+        <tbody >
+        <div v-if="showFOrder.length>0">
+            <tr v-for="(item,index) of showFOrder" align="center">
+                <td>{{index+1}}</td>
+                <td>{{item.linkname}}</td>
+                <td>{{item.type}}</td>
+                <td>{{item.num}}</td>
+                <td>{{item.phone}}</td>
+                <td>{{item.odate}}</td>
+                <td><a href="JavaScript:;" @click="deleteFOrder(item.oid)">删除</a>
+                    <a href="JavaScript:;"
+                       @click="updateOk(item.oid,item.linkname,item.type,item.num,item.phone,item.odate)">修改</a>
+                </td>
+            </tr>
+        </div>
+        <div v-else>
+            <h4>暂无数据，请及时去添加</h4>
+        </div>
         </tbody>
     </table>
+    <div>
+        <fieldset style="width: 350px;height: auto">
+            <legend id="leg">预订</legend>
+            <p>
+                <label for="oid">预定编号：</label>
+                <input id="oid" v-model="FOrder.oid" name="oid" type="text" readonly/>
+            </p>
+            <p>
+                <label for="linkname">预订人姓名：</label>
+                <input id="linkname" v-model="FOrder.linkname" name="linkname" type="text"/>
+            </p>
+            <p>
+                <label>鲜花类型：</label>
+                <select v-model="FOrder.type" style="width: 150px">
+                    <option value="玫瑰">玫瑰</option>
+                    <option value="郁金香">郁金香</option>
+                    <option value="百合">百合</option>
+                </select>
+            </p>
+            <p>
+                <label for="num">预定数量：</label>
+                <input id="num" name="num" v-model="FOrder.num" type="text">
+            </p>
+            <p>
+                <label for="Phone">联系电话：</label>
+                <input id="Phone" name="Phone" v-model="FOrder.Phone" type="text"/>
+            </p>
+            <p>
+                <label for="oDate">送货日期：</label>
+                <input id="oDate" name="oDate" v-model="FOrder.oDate" type="text"/>
+            </p>
+            <p>
+                <button id="btnAdd" @click="insertFOrder()">预订</button>
+                <button id="btnUpdate" @click="updateFOrder()">修改</button>
+            </p>
+        </fieldset>
+    </div>
 </div>
 <script>
     var vm = new Vue({
         el: "#showFOrder",
-        data() {
-            return {
-                showFOrder: [],
+        data: {
+            showFOrder: [],
+            FOrder: {
+                oid: '',
+                linkname: '',
+                type: '',
+                num: '',
+                Phone: '',
+                oDate: ''
             }
         },
-        created(){
-
+        created: function () {
+            this.showALL();
         },
-        methods:{
-            showALL(){
+        methods: {
+            //查询全部
+            showALL: function () {
+                var that = this
                 $.ajax({
-                    url:'/fOrder/selectAll',
-                    type:'get',
-                    dataType:'json',
+                    url: "http://localhost:8080/fOrder/selectFOrder",
+                    type: "get",
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res==null||res==""){
+                            var btnUpdate = document.getElementById('btnUpdate');
+                            btnUpdate.disabled = true; //使用true或false，控制是否让按钮禁用
+                        } else {
+                            that.showFOrder = res
+                            console.log(that.showFOrder)
+                        }
 
+                    }
+                })
+            },
+            insertFOrder: function () {
+                var that = this
+                var FOrders = {
+                    linkname: that.FOrder.linkname,
+                    type: that.FOrder.type,
+                    num: that.FOrder.num,
+                    Phone: that.FOrder.Phone,
+                    oDate: that.FOrder.oDate,
+                }
+                $.ajax({
+                    url: "http://localhost:8080/fOrder/insertFOrder",
+                    type: "get",
+                    data: FOrders,
+                    contentType: "application/json;charset=utf-8",
+                    success: function (res) {
+                        alert("添加成功");
+                        setTimeout(function () {
+                            location.reload()
+                        }, 500)
+                    }
+                })
+            },
+            deleteFOrder: function (id) {
+                $.ajax({
+                    url: "http://localhost:8080/fOrder/deleteFOrder",
+                    type: "get",
+                    data: {oid: id},
+                    contentType: "application/json;charset=utf-8",
+                    success: function (res) {
+                        alert("删除成功");
+                        setTimeout(function () {
+                            location.reload()
+                        }, 1000)
+                    }
+                })
+            },
+            updateOk: function (id, linkname, type, num, phone, odate) {
+                var that = this
+                that.FOrder.oid = id;
+                that.FOrder.linkname = linkname;
+                that.FOrder.type = type;
+                that.FOrder.num = num;
+                that.FOrder.Phone = phone
+                that.FOrder.oDate = odate;
+                var btnAdd = document.getElementById('btnAdd');
+                btnAdd.disabled = true; //使用true或false，控制是否让按钮禁用
+            },
+            updateFOrder: function () {
+                var that = this
+                var FOrders = {
+                    linkname: that.FOrder.linkname,
+                    type: that.FOrder.type,
+                    num: that.FOrder.num,
+                    Phone: that.FOrder.Phone,
+                    oDate: that.FOrder.oDate,
+                    oid: that.FOrder.oid
+                }
+                // alert(that.FOrder.linkname)
+                $.ajax({
+                    url: "http://localhost:8080/fOrder/updateFOrder",
+                    type: "get",
+                    data: FOrders,
+                    contentType: "application/json;charset=utf-8",
+                    success: function (res) {
+                        alert("修改成功");
+                        var btnAdd = document.getElementById('btnAdd');
+                        btnAdd.disabled = false; //使用true或false，控制是否让按钮禁用
+                        setTimeout(function () {
+                            location.reload()
+                        }, 1000)
+                    }
                 })
             }
         }

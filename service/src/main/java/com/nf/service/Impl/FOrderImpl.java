@@ -16,4 +16,16 @@ public class FOrderImpl implements FOrderService {
     public List<FOrder> selectFOrder() {
         return fOrderDao.selectFOrder();
     }
+
+    public int insertFOrder(FOrder fOrder) {
+        return fOrderDao.insertFOrder(fOrder);
+    }
+
+    public int deleteFOrder(int oid) {
+        return fOrderDao.deleteFOrder(oid);
+    }
+
+    public int updateFOrder(FOrder fOrder) {
+        return fOrderDao.updateFOrder(fOrder);
+    }
 }

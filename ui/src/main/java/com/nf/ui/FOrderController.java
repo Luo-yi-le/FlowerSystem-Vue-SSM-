@@ -1,7 +1,6 @@
 package com.nf.ui;
 
 import com.nf.entity.FOrder;
-import com.nf.entity.R;
 import com.nf.service.FOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,5 +24,32 @@ public class FOrderController {
     @ResponseBody
     public List<FOrder> selectFOrder(){
         return fOrderService.selectFOrder();
+    }
+
+    /**
+     * 添加
+     * */
+    @RequestMapping(path = "/insertFOrder",method = RequestMethod.GET)
+    @ResponseBody
+    public int insertFOrder(FOrder fOrder){
+        return fOrderService.insertFOrder(fOrder);
+    }
+
+    /**
+     * 删除
+     * */
+    @RequestMapping(path = "/deleteFOrder",method = RequestMethod.GET)
+    @ResponseBody
+    public int deleteFOrder(int oid){
+        return fOrderService.deleteFOrder(oid);
+    }
+
+    /**
+     * 修改
+     * */
+    @RequestMapping(path = "/updateFOrder",method = RequestMethod.GET)
+    @ResponseBody
+    public int updateFOrder(FOrder fOrder){
+        return fOrderService.updateFOrder(fOrder);
     }
 }

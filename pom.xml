@@ -29,7 +29,7 @@
         <c3p0.version>0.9.1.2</c3p0.version>
         <spring-test.version>4.3.18.RELEASE</spring-test.version>
 
-        <jackson.version>2.5.4</jackson.version>
+        <!--<jackson.version>2.5.4</jackson.version>-->
         <!--spring mvc-->
         <jstl.version>1.2</jstl.version>
         <servlet-api.version>3.0.1</servlet-api.version>
