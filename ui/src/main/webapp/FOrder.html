@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>鲜花订单</title>
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <style>
+        thead {
+            color: #285e8e;
+        }
+    </style>
+</head>
+<body>
+<div id="showFOrder">
+    <table border="1" cellpadding="0" cellspacing="0" width="80%" align="center">
+        <thead>
+        <tr align="center">
+            <th>预定编号</th>
+            <th>预订人姓名</th>
+            <th>鲜花类型</th>
+            <th>预定数量</th>
+            <th>联系电话</th>
+            <th>送货日期</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    var vm = new Vue({
+        el: "#showFOrder",
+        data() {
+            return {
+                showFOrder: [],
+            }
+        },
+        created(){
+
+        },
+        methods:{
+            showALL(){
+                $.ajax({
+                    url:'/fOrder/selectAll',
+                    type:'get',
+                    dataType:'json',
+
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

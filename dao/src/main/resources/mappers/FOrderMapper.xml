@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间应该是对应接口的包名+接口名 -->
+<mapper namespace="com.nf.dao.FOrderDao"><!--.dao-->
+
+    <resultMap id="allFOrder" type="FOrder">
+        <id column="oid" property="oid"></id>
+        <result column="linkname" property="linkname"></result>
+        <result column="num" property="num"></result>
+        <result column="type" property="type"></result>
+        <result column="Phone" property="Phone"></result>
+        <result column="oDate" property="oDate"></result>
+    </resultMap>
+
+    <select id="selectFOrder" resultMap="allFOrder">
+        select * from f_order order by oDate  desc
+    </select>
+    <insert id="insertFOrder" parameterType="FOrder" useGeneratedKeys="true" keyProperty="oid">
+        insert into f_order(linkname,num,type,Phone,oDate)values(#{linkname},#{num},#{type},#{Phone},#{oDate})
+    </insert>
+</mapper>
